@@ -1,0 +1,33 @@
+{
+  "name": "style-builder",
+  "version": "1.0.0",
+  "description": "JavaScript Utility to convert shorthand CSS properties into subcomponents",
+  "main": "StyleBuilder.js",
+  "scripts": {
+    "build": "gulp build",
+    "test": "jest",
+    "release": "gulp release"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ActionIQ/style-builder.git"
+  },
+  "author": "actioniq",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ActionIQ/style-builder/issues"
+  },
+  "homepage": "https://github.com/ActionIQ/style-builder#readme",
+  "devDependencies": {
+    "babel-jest": "*",
+    "gulp": "^3.9.0",
+    "gulp-babel": "^5.2.1",
+    "jest-cli": "^0.5.10"
+  },
+  "jest": {
+    "scriptPreprocessor": "<rootDir>/node_modules/babel-jest"
+  },
+  "dependencies": {
+    "underscore": "^1.8.3"
+  }
+}
