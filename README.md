@@ -23,7 +23,7 @@ console.log(_styles);
 ```
 ## Build
 ```
-npm run-script buld
+npm run-script build
 ```
 
 ## Test
