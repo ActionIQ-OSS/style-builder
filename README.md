@@ -10,7 +10,7 @@ When using inline styles with React components it can be dangerous to use shorth
 const StyleBuilder = require("style-builder");
 
 const _styles = StyleBuilder.build({
-  margin: "5px 10px";
+  margin: "5px 10px"
 });
 
 console.log(_styles);
