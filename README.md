@@ -32,9 +32,9 @@ npm test
 ```
 
 ## TODO
-background
-font
-transition
-transform
-list-style
+* background
+* font
+* transition
+* transform
+* list-style
 
