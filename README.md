@@ -2,7 +2,7 @@
 
 A JavaScript utility to break apart shorthand CSS components in objects.
 
-When using inline styles with React components it can be dangerous to use shorthand CSS properties. As a work around use StyleBuilder to break apart any shorthand properties it finds in your style objects.
+When using inline styles with React components, it can be dangerous to use shorthand CSS properties. As a work around, use StyleBuilder to break apart any shorthand properties that exist in your style objects.
 
 ## Example
 
