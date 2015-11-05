@@ -27,8 +27,6 @@
 
 "use strict";
 
-const _ = require("underscore");
-
 const _borderStyles = ["none", "hidden", "dotted", "dashed", "solid", "double", "groove", "ridge", "inset", "outset"];
 const _units = ["px", "em", "pt", "%"];
 
@@ -162,11 +160,11 @@ class StyleBuilder {
 
   border(value) {
     // TODO: Properly handle { border: <style> | <style> <color> }
-    return _.extend({},
-                    this.borderSide(value, "Left"),
-                    this.borderSide(value, "Right"),
-                    this.borderSide(value, "Top"),
-                    this.borderSide(value, "Bottom"));
+    return Object.assign({},
+                          this.borderSide(value, "Left"),
+                          this.borderSide(value, "Right"),
+                          this.borderSide(value, "Top"),
+                          this.borderSide(value, "Bottom"));
   }
 
   build(styles) {
@@ -187,7 +185,7 @@ class StyleBuilder {
 
       if (type == "string") {
         if (this[key]) {
-          _.extend(newStyles, this[key](value));
+          Object.assign(newStyles, this[key](value));
         } else {
           newStyles[key] = value;
         }

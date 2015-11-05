@@ -1,6 +1,6 @@
 {
   "name": "style-builder",
-  "version": "1.0.2",
+  "version": "1.0.5",
   "description": "JavaScript Utility to convert shorthand CSS properties into subcomponents",
   "main": "StyleBuilder.js",
   "scripts": {
@@ -28,7 +28,11 @@
     "scriptPreprocessor": "<rootDir>/node_modules/babel-jest"
   },
   "dependencies": {
-    "underscore": "^1.8.3"
   },
-  "keywords": ["react", "javascript", "css", "inline-styles"]
+  "keywords": [
+    "react",
+    "javascript",
+    "css",
+    "inline-styles"
+  ]
 }
