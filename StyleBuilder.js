@@ -123,22 +123,39 @@ class StyleBuilder {
   }
 
   borderSide(value, side) {
-    const styles = {};
-    if (_borderStyles.indexOf(value) > -1) {
-      styles[`border${side}Width`] = "initial";
-      styles[`border${side}Style`] = value;
-      styles[`border${side}Color`] = "initial";
-      return styles;
-    }
+    const styles = {
+      [`border${side}Width`]: "initial",
+      [`border${side}Style`]: "initial",
+      [`border${side}Color`]: "initial",
+    };
+
     const values = value.split(" ");
-    if (values.length == 1) {
-      styles[`border${side}Width`] = values[0];
-      styles[`border${side}Style`] = "initial";
-      styles[`border${side}Color`] = "initial";
+    if (values.length > 3) {
+      console.warn(`More than 3 properties found in border: ${value}. Only using first 3`);
     }
-    if (values[0]) { styles[`border${side}Width`] = values[0]; }
-    if (values[1]) { styles[`border${side}Style`] = values[1]; }
-    if (values[2]) { styles[`border${side}Color`] = values[2]; }
+
+    let widthIndex, styleIndex, colorIndex = -1;
+    [0, 1, 2].forEach(index => {
+      if (values[index] === undefined) { return; }
+
+      const v = values[index].trim();
+
+      if (_borderStyles.indexOf(v) > -1) {
+        if (styleIndex > -1) { console.warn(`Found more than one 'style' border prop: ${value}`); }
+        styleIndex = index;
+      } else if (!isNaN(parseFloat(v))) {
+        if (widthIndex > -1) { console.warn(`Found more than one 'width' border prop: ${value}`); }
+        widthIndex = index;
+      } else {
+        if (colorIndex > -1) { console.warn(`Found more than one 'color' border prop: ${value}`); }
+        colorIndex = index;
+      }
+    });
+
+    if (widthIndex > -1) { styles[`border${side}Width`] = values[widthIndex]; }
+    if (styleIndex > -1) { styles[`border${side}Style`] = values[styleIndex]; }
+    if (colorIndex > -1) { styles[`border${side}Color`] = values[colorIndex]; }
+
     return styles;
   }
 
@@ -180,7 +197,7 @@ class StyleBuilder {
      * indexes.
      */
     Object.keys(styles).forEach((key) => {
-      const value = styles[key];
+      const value = styles[key].trim();
       const type = typeof value;
 
       if (type == "string") {
