@@ -33,9 +33,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var _ = require("underscore");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var _borderStyles = ["none", "hidden", "dotted", "dashed", "solid", "double", "groove", "ridge", "inset", "outset"];
 var _units = ["px", "em", "pt", "%"];
@@ -166,28 +166,53 @@ var StyleBuilder = (function () {
   }, {
     key: "borderSide",
     value: function borderSide(value, side) {
-      var styles = {};
-      if (_borderStyles.indexOf(value) > -1) {
-        styles["border" + side + "Width"] = "initial";
-        styles["border" + side + "Style"] = value;
-        styles["border" + side + "Color"] = "initial";
-        return styles;
-      }
+      var _styles;
+
+      var styles = (_styles = {}, _defineProperty(_styles, "border" + side + "Width", "initial"), _defineProperty(_styles, "border" + side + "Style", "initial"), _defineProperty(_styles, "border" + side + "Color", "initial"), _styles);
+
       var values = value.split(" ");
-      if (values.length == 1) {
-        styles["border" + side + "Width"] = values[0];
-        styles["border" + side + "Style"] = "initial";
-        styles["border" + side + "Color"] = "initial";
+      if (values.length > 3) {
+        console.warn("More than 3 properties found in border: " + value + ". Only using first 3");
       }
-      if (values[0]) {
-        styles["border" + side + "Width"] = values[0];
+
+      var widthIndex = undefined,
+          styleIndex = undefined,
+          colorIndex = -1;
+      [0, 1, 2].forEach(function (index) {
+        if (values[index] === undefined) {
+          return;
+        }
+
+        var v = values[index].trim();
+
+        if (_borderStyles.indexOf(v) > -1) {
+          if (styleIndex > -1) {
+            console.warn("Found more than one 'style' border prop: " + value);
+          }
+          styleIndex = index;
+        } else if (!isNaN(parseFloat(v))) {
+          if (widthIndex > -1) {
+            console.warn("Found more than one 'width' border prop: " + value);
+          }
+          widthIndex = index;
+        } else {
+          if (colorIndex > -1) {
+            console.warn("Found more than one 'color' border prop: " + value);
+          }
+          colorIndex = index;
+        }
+      });
+
+      if (widthIndex > -1) {
+        styles["border" + side + "Width"] = values[widthIndex];
       }
-      if (values[1]) {
-        styles["border" + side + "Style"] = values[1];
+      if (styleIndex > -1) {
+        styles["border" + side + "Style"] = values[styleIndex];
       }
-      if (values[2]) {
-        styles["border" + side + "Color"] = values[2];
+      if (colorIndex > -1) {
+        styles["border" + side + "Color"] = values[colorIndex];
       }
+
       return styles;
     }
   }, {
@@ -214,7 +239,7 @@ var StyleBuilder = (function () {
     key: "border",
     value: function border(value) {
       // TODO: Properly handle { border: <style> | <style> <color> }
-      return _.extend({}, this.borderSide(value, "Left"), this.borderSide(value, "Right"), this.borderSide(value, "Top"), this.borderSide(value, "Bottom"));
+      return Object.assign({}, this.borderSide(value, "Left"), this.borderSide(value, "Right"), this.borderSide(value, "Top"), this.borderSide(value, "Bottom"));
     }
   }, {
     key: "build",
@@ -233,12 +258,12 @@ var StyleBuilder = (function () {
        * indexes.
        */
       Object.keys(styles).forEach(function (key) {
-        var value = styles[key];
+        var value = styles[key].trim();
         var type = typeof value;
 
         if (type == "string") {
           if (_this2[key]) {
-            _.extend(newStyles, _this2[key](value));
+            Object.assign(newStyles, _this2[key](value));
           } else {
             newStyles[key] = value;
           }

@@ -1,8 +1,8 @@
 {
   "name": "style-builder",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "JavaScript Utility to convert shorthand CSS properties into subcomponents",
-  "main": "StyleBuilder.js",
+  "main": "dist/StyleBuilder.js",
   "scripts": {
     "build": "gulp build",
     "test": "jest",
