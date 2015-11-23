@@ -197,7 +197,7 @@ class StyleBuilder {
      * indexes.
      */
     Object.keys(styles).forEach((key) => {
-      const value = styles[key].trim();
+      const value = styles[key];
       const type = typeof value;
 
       if (type == "string") {
