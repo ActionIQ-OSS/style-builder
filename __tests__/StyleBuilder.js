@@ -158,4 +158,20 @@ describe("StyleBuilder", function() {
       marginLeft:   "20px"
     });
   });
+
+  it("convert a style given as a function call", function() {
+    expect(StyleBuilder.build({
+      elem: function(size) {
+        return {
+          margin: size,
+        };
+      },
+    }).elem("5px")).toEqual({
+      marginTop:    "5px",
+      marginRight:  "5px",
+      marginBottom: "5px",
+      marginLeft:   "5px",
+    });
+  });
+
 });
