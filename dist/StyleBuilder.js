@@ -258,7 +258,7 @@ var StyleBuilder = (function () {
        * indexes.
        */
       Object.keys(styles).forEach(function (key) {
-        var value = styles[key].trim();
+        var value = styles[key];
         var type = typeof value;
 
         if (type == "string") {
