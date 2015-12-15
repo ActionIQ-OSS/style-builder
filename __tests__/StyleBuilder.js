@@ -1,5 +1,5 @@
 jest.dontMock("../StyleBuilder");
-jest.dontMock("underscore");
+jest.dontMock("../node_modules/object-assign/index.js");
 
 const borderResult = {
   borderBottomColor:  "green",

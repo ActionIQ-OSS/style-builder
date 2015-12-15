@@ -25,6 +25,7 @@
  *  list-style
  */
 
+const objectAssign = require('object-assign');
 "use strict";
 
 const _borderStyles = ["none", "hidden", "dotted", "dashed", "solid", "double", "groove", "ridge", "inset", "outset"];
@@ -177,7 +178,7 @@ class StyleBuilder {
 
   border(value) {
     // TODO: Properly handle { border: <style> | <style> <color> }
-    return Object.assign({},
+    return objectAssign({},
                           this.borderSide(value, "Left"),
                           this.borderSide(value, "Right"),
                           this.borderSide(value, "Top"),
@@ -202,7 +203,7 @@ class StyleBuilder {
 
       if (type == "string") {
         if (this[key]) {
-          Object.assign(newStyles, this[key](value));
+          objectAssign(newStyles, this[key](value));
         } else {
           newStyles[key] = value;
         }

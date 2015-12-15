@@ -1,6 +1,6 @@
 {
   "name": "style-builder",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "JavaScript Utility to convert shorthand CSS properties into subcomponents",
   "main": "dist/StyleBuilder.js",
   "scripts": {
@@ -28,6 +28,7 @@
     "scriptPreprocessor": "<rootDir>/node_modules/babel-jest"
   },
   "dependencies": {
+    "object-assign": "^4.0.1"
   },
   "keywords": [
     "react",

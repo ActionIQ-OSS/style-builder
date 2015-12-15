@@ -37,6 +37,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var objectAssign = require('object-assign');
+
+"use strict";
+
 var _borderStyles = ["none", "hidden", "dotted", "dashed", "solid", "double", "groove", "ridge", "inset", "outset"];
 var _units = ["px", "em", "pt", "%"];
 
@@ -239,7 +243,7 @@ var StyleBuilder = (function () {
     key: "border",
     value: function border(value) {
       // TODO: Properly handle { border: <style> | <style> <color> }
-      return Object.assign({}, this.borderSide(value, "Left"), this.borderSide(value, "Right"), this.borderSide(value, "Top"), this.borderSide(value, "Bottom"));
+      return objectAssign({}, this.borderSide(value, "Left"), this.borderSide(value, "Right"), this.borderSide(value, "Top"), this.borderSide(value, "Bottom"));
     }
   }, {
     key: "build",
@@ -263,7 +267,7 @@ var StyleBuilder = (function () {
 
         if (type == "string") {
           if (_this2[key]) {
-            Object.assign(newStyles, _this2[key](value));
+            objectAssign(newStyles, _this2[key](value));
           } else {
             newStyles[key] = value;
           }
