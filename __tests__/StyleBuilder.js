@@ -174,4 +174,29 @@ describe("StyleBuilder", function() {
     });
   });
 
+  it("returns the same object for style functions when given the same params", function() {
+    var styles = StyleBuilder.build({
+      fn: function(a, b, c) {
+        return {
+          background: a ? "green" : "blue",
+          margin: b ? "5px" : "10px",
+          padding: c ? "1px 2px" : "3px 4px",
+        };
+      }
+    });
+    expect(styles.fn(true, false, true)).toBe(styles.fn(true, false, true));
+    expect(styles.fn(false, true, false)).toBe(styles.fn(false, true, false));
+  });
+
+  it("returns different objects for style functions when given different params, even if response has same keys and values", function() {
+    var styles = StyleBuilder.build({
+      fn: function(a, b, c) {
+        return {
+          background: "green",
+        };
+      }
+    });
+    expect(styles.fn(true, true, true)).toEqual(styles.fn(false, false, false));
+    expect(styles.fn(true, true, true)).not.toBe(styles.fn(false, false, false));
+  });
 });

@@ -185,13 +185,29 @@ class StyleBuilder {
                           this.borderSide(value, "Bottom"));
   }
 
-  build(styles) {
+  build(styles, options) {
     let newStyles;
     if (styles.length !== undefined) {
       newStyles = [];
     } else {
       newStyles = {};
     }
+
+    /*
+     * Options:
+     *
+     * cache [default: true]: if style builder should cache responses from style functions
+     */
+    options = objectAssign({}, {
+      cache: true
+    }, options);
+
+    /*
+     * A cache to store the result of style functions when passed the same arguments.
+     * Helps make PureRenderMixin more performant as without the cache each call to
+     * the function returns a new object instance.
+     */
+    const styleCache = {};
 
     /*
      * Loop through each key in the object, if array Object.keys returns
@@ -213,7 +229,14 @@ class StyleBuilder {
         newStyles[key] = this.build(value);
       } else if (type == "function") {
         newStyles[key] = (...args) => {
-          return this.build(value(...args));
+          if (options.cache) {
+            const key = JSON.stringify(...args);
+            if (!styleCache[key]) {
+              styleCache[key] = this.build(value(...args));
+            }
+            return styleCache[key];
+         }
+         return this.build(value(...args));
         };
       } else {
         newStyles[key] = value;
