@@ -38,7 +38,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var objectAssign = require('object-assign');
-
 "use strict";
 
 var _borderStyles = ["none", "hidden", "dotted", "dashed", "solid", "double", "groove", "ridge", "inset", "outset"];
@@ -247,7 +246,7 @@ var StyleBuilder = (function () {
     }
   }, {
     key: "build",
-    value: function build(styles) {
+    value: function build(styles, options) {
       var _this2 = this;
 
       var newStyles = undefined;
@@ -256,6 +255,22 @@ var StyleBuilder = (function () {
       } else {
         newStyles = {};
       }
+
+      /*
+       * Options:
+       *
+       * cache [default: true]: if style builder should cache responses from style functions
+       */
+      options = objectAssign({}, {
+        cache: true
+      }, options);
+
+      /*
+       * A cache to store the result of style functions when passed the same arguments.
+       * Helps make PureRenderMixin more performant as without the cache each call to
+       * the function returns a new object instance.
+       */
+      var styleCache = {};
 
       /*
        * Loop through each key in the object, if array Object.keys returns
@@ -279,6 +294,13 @@ var StyleBuilder = (function () {
           newStyles[key] = _this2.build(value);
         } else if (type == "function") {
           newStyles[key] = function () {
+            if (options.cache) {
+              var _key = JSON.stringify.apply(JSON, arguments);
+              if (!styleCache[_key]) {
+                styleCache[_key] = _this2.build(value.apply(undefined, arguments));
+              }
+              return styleCache[_key];
+            }
             return _this2.build(value.apply(undefined, arguments));
           };
         } else {
