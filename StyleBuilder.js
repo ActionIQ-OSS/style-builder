@@ -235,8 +235,8 @@ class StyleBuilder {
               styleCache[key] = this.build(value(...args));
             }
             return styleCache[key];
-         }
-         return this.build(value(...args));
+          }
+          return this.build(value(...args));
         };
       } else {
         newStyles[key] = value;
