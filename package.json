@@ -1,6 +1,6 @@
 {
   "name": "style-builder",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "JavaScript Utility to convert shorthand CSS properties into subcomponents",
   "main": "dist/StyleBuilder.js",
   "scripts": {
