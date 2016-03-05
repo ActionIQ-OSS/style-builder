@@ -230,7 +230,7 @@ class StyleBuilder {
       } else if (type == "function") {
         newStyles[key] = (...args) => {
           if (options.cache) {
-            const key = JSON.stringify(...args);
+            const key = JSON.stringify(args);
             if (!styleCache[key]) {
               styleCache[key] = this.build(value(...args));
             }

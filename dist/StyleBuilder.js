@@ -294,14 +294,18 @@ var StyleBuilder = (function () {
           newStyles[key] = _this2.build(value);
         } else if (type == "function") {
           newStyles[key] = function () {
-            if (options.cache) {
-              var _key = JSON.stringify.apply(JSON, arguments);
-              if (!styleCache[_key]) {
-                styleCache[_key] = _this2.build(value.apply(undefined, arguments));
-              }
-              return styleCache[_key];
+            for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+              args[_key] = arguments[_key];
             }
-            return _this2.build(value.apply(undefined, arguments));
+
+            if (options.cache) {
+              var _key2 = JSON.stringify(args);
+              if (!styleCache[_key2]) {
+                styleCache[_key2] = _this2.build(value.apply(undefined, args));
+              }
+              return styleCache[_key2];
+            }
+            return _this2.build(value.apply(undefined, args));
           };
         } else {
           newStyles[key] = value;

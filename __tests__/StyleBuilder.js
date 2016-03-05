@@ -186,6 +186,7 @@ describe("StyleBuilder", function() {
     });
     expect(styles.fn(true, false, true)).toBe(styles.fn(true, false, true));
     expect(styles.fn(false, true, false)).toBe(styles.fn(false, true, false));
+    expect(styles.fn(false, true)).not.toBe(styles.fn(false, false));
   });
 
   it("returns different objects for style functions when given different params, even if response has same keys and values", function() {
