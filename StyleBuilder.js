@@ -203,13 +203,6 @@ class StyleBuilder {
     }, options);
 
     /*
-     * A cache to store the result of style functions when passed the same arguments.
-     * Helps make PureRenderMixin more performant as without the cache each call to
-     * the function returns a new object instance.
-     */
-    const styleCache = {};
-
-    /*
      * Loop through each key in the object, if array Object.keys returns
      * indexes.
      */
@@ -228,6 +221,13 @@ class StyleBuilder {
       } else if (type == "object") {
         newStyles[key] = this.build(value);
       } else if (type == "function") {
+        /*
+         * A cache to store the result of style functions when passed the same arguments.
+         * Helps make PureRenderMixin more performant as without the cache each call to
+         * the function returns a new object instance.
+         */
+        const styleCache = {};
+
         newStyles[key] = (...args) => {
           if (options.cache) {
             const key = JSON.stringify(args);

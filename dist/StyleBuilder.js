@@ -266,13 +266,6 @@ var StyleBuilder = (function () {
       }, options);
 
       /*
-       * A cache to store the result of style functions when passed the same arguments.
-       * Helps make PureRenderMixin more performant as without the cache each call to
-       * the function returns a new object instance.
-       */
-      var styleCache = {};
-
-      /*
        * Loop through each key in the object, if array Object.keys returns
        * indexes.
        */
@@ -293,20 +286,29 @@ var StyleBuilder = (function () {
         } else if (type == "object") {
           newStyles[key] = _this2.build(value);
         } else if (type == "function") {
-          newStyles[key] = function () {
-            for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-              args[_key] = arguments[_key];
-            }
+          (function () {
+            /*
+             * A cache to store the result of style functions when passed the same arguments.
+             * Helps make PureRenderMixin more performant as without the cache each call to
+             * the function returns a new object instance.
+             */
+            var styleCache = {};
 
-            if (options.cache) {
-              var _key2 = JSON.stringify(args);
-              if (!styleCache[_key2]) {
-                styleCache[_key2] = _this2.build(value.apply(undefined, args));
+            newStyles[key] = function () {
+              for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+                args[_key] = arguments[_key];
               }
-              return styleCache[_key2];
-            }
-            return _this2.build(value.apply(undefined, args));
-          };
+
+              if (options.cache) {
+                var _key2 = JSON.stringify(args);
+                if (!styleCache[_key2]) {
+                  styleCache[_key2] = _this2.build(value.apply(undefined, args));
+                }
+                return styleCache[_key2];
+              }
+              return _this2.build(value.apply(undefined, args));
+            };
+          })();
         } else {
           newStyles[key] = value;
         }

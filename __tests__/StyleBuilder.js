@@ -200,4 +200,21 @@ describe("StyleBuilder", function() {
     expect(styles.fn(true, true, true)).toEqual(styles.fn(false, false, false));
     expect(styles.fn(true, true, true)).not.toBe(styles.fn(false, false, false));
   });
+
+  it("caches separately for different style functions", function() {
+    var styles = StyleBuilder.build({
+      fn1: function(a, b, c) {
+        return {
+          background: "green",
+        };
+      },
+      fn2: function(d, e, f) {
+       return {
+         background: "blue",
+       };
+      },
+    });
+    expect(styles.fn1(true, true, true)).not.toBe(styles.fn2(true, true, true));
+    expect(styles.fn1(true, true, true)).not.toEqual(styles.fn2(true, true, true));
+  });
 });
