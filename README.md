@@ -26,7 +26,7 @@ console.log(_styles);
 ## Options
 Style builder can also take options when building styles. Currently only one option is available.
 
-`cache`: If true, style builder will store a cache of the results from style functions, key'd off the arguments. This is very useful in React if you use the pure render mixin. Each time you pass a computed style to a child component, it will receive the exact (===) same style object.
+`cache` (default: `true`): If true, style builder will store a cache of the results from style functions, key'd off the arguments. This is very useful in React if you use the pure render mixin. Each time you pass a computed style to a child component, it will receive the exact (===) same style object.
 
 For example:
 ```
