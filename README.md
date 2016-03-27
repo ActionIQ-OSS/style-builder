@@ -23,6 +23,31 @@ console.log(_styles);
   marginLeft: "10px"
 }
 ```
+## Options
+Style builder can also take options when building styles. Currently only one option is available.
+
+`cache`: If true, style builder will store a cache of the results from style functions, key'd off the arguments. This is very useful in React if you use the pure render mixin. Each time you pass a computed style to a child component, it will receive the exact (===) same style object.
+
+For example:
+```
+const _styles = StyleBuilder.build({
+  awesomeStyle: (iLikeGreen) => ({
+    background: iLikeGreen ? "green" : "blue",
+  }),
+}, {
+  cache: true,
+});
+console.log(_styles.awesomeStyle(true) === _styles.awesomeStyle(true)); // true
+
+const _styles = StyleBuilder.build({
+  awesomeStyle: (iLikeGreen) => ({
+    background: iLikeGreen ? "green" : "blue",
+  }),
+}, {
+  cache: false,
+});
+console.log(_styles.awesomeStyle(true) === _styles.awesomeStyle(true)); // false
+```
 ## Build
 ```
 npm run-script build
